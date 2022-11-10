@@ -8,14 +8,33 @@ class App extends React.Component {
     imgSrc: ProfileImg,
     profession: "FullStack Web Developper",
     shows: true,
+    timer: null,
+    seconds: 0,
   }
 
   toggle() {
     this.setState({shows: !this.state.shows})
   }
 
-  render() {
+  componentDidMount () {
+    this.setState({timer: setInterval(this.incrementer.bind(this), 1000)})
+  }
 
+  componentWillUnmount () {
+    clearInterval(this.state.timer)
+  }
+
+
+  incrementer () {
+    if (!this.state.shows) {
+      this.setState({seconds: this.state.seconds + 1}) 
+    } else {
+      this.setState({seconds: 0})
+    }
+  }
+
+  
+  render() {
     return (
       <>
 
@@ -48,6 +67,7 @@ class App extends React.Component {
 
         <div class="col-md-12 text-center">
           <button onClick={() => this.toggle()} type="button" className="btn btn-primary btn-lg m-auto text-center">Show Profile</button>
+          <a className="btn btn-outline-secondary rounded-pill disabled ms-2">{this.state.seconds} Seconds</a>
         </div>
 
       </>
